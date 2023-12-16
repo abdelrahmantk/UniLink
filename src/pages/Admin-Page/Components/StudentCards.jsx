@@ -8,8 +8,7 @@ const StudentCard = ({ title, logoSrc, bodyText, setmodal, setModalStudent }) =>
         borderRadius: '10px',
         padding: '20px',
         color: '#fff',
-
-        width: '250px',
+ 
     };
     const btnClick = () => {
         setModalStudent();

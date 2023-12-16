@@ -32,11 +32,15 @@ body {
 /* Sidebar styles */
 
 .sidebar {
-
-  width: 16%;
-  height: 100%;
+  font-size: 1em;
+  width: 16vw;
+  display: flex;
+  flex-direction: column;
+  margin-left: 1%;
+  margin-top: 1%;
+  height: 96%;
   background-color: #4D4560;
-  border-radius: 0px 15px 15px 0px;
+  border-radius: 15px 15px 15px 15px;
   color: white;
   font-family: "DM Sans", "Roboto", -apple-system, "Segoe UI", sans-serif;
   transition: opacity 1s ease-in;
@@ -51,14 +55,25 @@ body {
 
 .SidebarContent {
   display: flex;
+  z-index: 0; 
   padding-left: 20px;
   justify-content: start;
   gap: 20px;
 }
-
-.SidebarContent:hover {
-  background-color: #A688FA;
+.SidebarContent:hover{
+ 
+ 
+ 
+  background-color: #211938;
+  border-top-left-radius: 100px;
+  border-bottom-left-radius: 100px;
+  
 }
+ 
+ 
+ 
+ 
+ 
 
 .content img {
   margin-right: 100px;
@@ -179,10 +194,12 @@ body {
 
 /* Card CSS*/
 .card {
-  width: max-content;
+   
   animation: fadeUpAnimation 1s forwards;
   margin-left: 20px;
-
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #cardBody {
@@ -200,7 +217,9 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
+.sidebar img{
+  margin-top: 21.28px;;
+}
 .spacer {
   flex-grow: 1;
 }
@@ -260,11 +279,11 @@ body {
 }
 
 .grid {
-  flex: 1;
+   
 
 
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
 
   row-gap: 10px;
 
@@ -280,13 +299,13 @@ body {
 
 @media screen and (max-width: 1000px) {
   .grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
   }
 }
 
 @media screen and (max-width: 800px) {
   .grid {
-    grid-template-columns: repeat(2, 0.5fr);
+    grid-template-columns: repeat(1, 1fr);
   }
 }
 
