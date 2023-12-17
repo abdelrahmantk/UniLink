@@ -9,6 +9,7 @@ import logoutIcon from './Assets/logout.svg'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import './AdminPage.css';
+ 
 function AdminPage() {
   const [menu, setMenu] = useState(0);
   const [modalOn, setModalOn] = useState(0);
@@ -18,12 +19,12 @@ function AdminPage() {
   const [update, setUpdate] = useState(true);
   const [loadingStudentData, setLoadingStudentData] = useState(true);
   const [warningTimeout, setWarningTimeout] = useState(null);
-
+ const [delModal, setDelModal] = useState(0);
   useEffect(() => {
     let timer;
     if (warningOn === 1) {
       timer = setTimeout(() => {
-        setWarningOn(0); // Reset warning after timeout
+        setWarningOn(0);  
         setWarningText('');
       }, 5000);
     }
@@ -44,7 +45,7 @@ function AdminPage() {
       clearTimeout(warningTimeout);
     }
 
-    // Set a new timeout for the new warning
+ 
     setWarningOn(1);
   };
   const handleSave = async () => {
@@ -83,10 +84,35 @@ function AdminPage() {
   // 0 -> students
   // 1 -> issues
   // 2 -> tables
-
+ const handleDel = async()=>{
+  try {
+    const response = await axios.delete('http://localhost:3000/api/delete-student', {
+      data: { student_id: modalStudent.Student_id } 
+    });
+  
+  } catch (error) {
+    console.error('Error Deleting data:', error);
+    handleNewWarning("Deleting Student Failed!");
+  }
+  setDelModal(0);
+  setUpdate(!update)
+ }
   return (
     <>
       <img style={{ display: "none" }} src={warningIcon} />
+      {delModal == 1 ?
+        <div id="Modal">
+          <div className="modal-content">
+            <div id='modal-title'>
+              <h2 id='Modaltexttitle'>Are you sure you want to remove this student ?</h2>
+              <span className="close" onClick={() => setDelModal(0)}>&times;</span>
+            </div>
+            <div id="delNameCenter">{modalStudent.Fname} {modalStudent.Lname}</div>
+            <div id='savebtn'>
+              <button className='btn' onClick={() => handleDel()}>Yes</button>
+            </div>
+          </div>
+        </div> : <></>}
       {warningOn == 1 ? <div key={warningText} id='warning'>
         <div id='lineDiv'>
           <div id='warningContent'>
@@ -137,40 +163,36 @@ function AdminPage() {
             </div>
           </div>
         </div> : <></>}
-
-
       {/*  Main container -> 2 cols -> side, main */}
       <div className="container">
         {/* Sidebar */}
         <aside className='sidebar'>
-     
           <div id='SidebarTitle'>
             <h2>Unilink<br />Admin Dashboard</h2>
           </div>
           <hr id='line'></hr>
-          <div className='SidebarContent' onClick={() => setMenu(0)}>
+          <div className={menu == 0 ? "SidebarContent HighlightedMenu" : "SidebarContent"} onClick={() => setMenu(0)}>
             <img width="20" height="24" src={studentIcon}></img>
             <h4>Students</h4>
           </div>
-          <div className='SidebarContent' onClick={() => setMenu(1)}>
+          <div className={menu == 1 ? "SidebarContent HighlightedMenu" : "SidebarContent"} onClick={() => setMenu(1)}>
             <img width="20" height="24" src={issueIcon}></img>
             <h4>Student Issues</h4>
           </div>
-          <div className='SidebarContent' onClick={() => setMenu(2)}>
+          <div className={menu == 2 ? "SidebarContent HighlightedMenu" : "SidebarContent"} onClick={() => setMenu(2)}>
             <img width="20" height="24" src={tableIcon}></img>
             <h4>Tables</h4>
           </div>
           <div className="spacer"></div>
-          <div className='SidebarContent' onClick={() => setMenu(2)}>
+          <div className='logout' onClick={() => setMenu(2)}>
             <img width="20" height="24" src={logoutIcon}></img>
             <h4>Log out</h4>
           </div>
-
         </aside>
         {/* Main content */}
         <main className="main-content">
           {menu == 0 ?
-            <Students loadingStudentData={loadingStudentData} setLoadingStudentData={setLoadingStudentData} setWarningOn={setWarningOn} setWarningText={setWarningText} setmodal={setModalOn} setModalStudent={setModalStudent} update={update}></Students> : <></>
+            <Students setDelModal={setDelModal} loadingStudentData={loadingStudentData} setLoadingStudentData={setLoadingStudentData} setWarningOn={setWarningOn} setWarningText={setWarningText} setmodal={setModalOn} setModalStudent={setModalStudent} update={update}></Students> : <></>
           }
           {menu == 1 ?
             <Issues></Issues> : <></>

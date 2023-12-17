@@ -2,7 +2,7 @@ import studentIcon from '../Assets/student.svg'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import StudentCard from './StudentCards'
-const Students = ({ loadingStudentData, setLoadingStudentData, setmodal, setModalStudent, update, setWarningOn, setWarningText }) => {
+const Students = ({ loadingStudentData, setLoadingStudentData, setmodal, setModalStudent, update, setWarningOn, setWarningText,setDelModal }) => {
     const [data, setData] = useState([])
     const [searchInput, setSearchInput] = useState('');
     const [filteredStudents, setFilteredStudents] = useState([]);
@@ -75,6 +75,7 @@ const Students = ({ loadingStudentData, setLoadingStudentData, setmodal, setModa
                             <StudentCard
                                 setmodal={setmodal}
                                 setModalStudent={() => setModalStudent(student)}
+                                setDelModal={setDelModal}
                                 key={index}
                                 title={`${student.Fname} ${student.Lname}`}
                                 logoSrc={studentIcon}
