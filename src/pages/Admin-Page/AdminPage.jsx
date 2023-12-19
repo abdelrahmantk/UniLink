@@ -20,6 +20,40 @@ function AdminPage() {
   const [loadingStudentData, setLoadingStudentData] = useState(true);
   const [warningTimeout, setWarningTimeout] = useState(null);
  const [delModal, setDelModal] = useState(0);
+ const [addModal, setAddModal] = useState(0);
+
+
+ const insertStudent = async()=>{
+  function isStringEmpty(input) {
+    return !input || input.trim() === '';
+  }
+  if (isStringEmpty(modalStudent.Fname) || isStringEmpty(modalStudent.Lname)) {
+
+    handleNewWarning("A student cannot have a blank name!")
+
+
+    return;
+  }
+  function isStringOnlyAlphabetic(input) {
+    return /^[a-zA-Z]+$/.test(input);
+  }
+  if (!isStringOnlyAlphabetic(modalStudent.Fname) || !isStringOnlyAlphabetic(modalStudent.Lname)) {
+
+
+    handleNewWarning("Name should contain only alphabetic characters!")
+
+    return;
+  }
+  try {
+    await axios.post('http://localhost:3000/api/insert-student', { fname: modalStudent.Fname, lname: modalStudent.Lname })
+  }
+  catch (error) {
+    console.error('Error inserting data:', error);
+    handleNewWarning("Inserting Student Failed!")
+  }
+  setAddModal(0);
+  setUpdate(!update)
+ }
   useEffect(() => {
     let timer;
     if (warningOn === 1) {
@@ -163,6 +197,39 @@ function AdminPage() {
             </div>
           </div>
         </div> : <></>}
+
+        {addModal == 1 ?
+        <div id="Modal">
+          <div className="modal-content">
+            <div id='modal-title'>
+              <h2 id='Modaltexttitle'>Add Student</h2>
+              <span className="close" onClick={() => setAddModal(0)}>&times;</span>
+            </div>
+            <div className='duo'>
+              <label>First Name:  </label>
+              <input
+                type="text"
+                name="Fname"
+                value={modalStudent.Fname}
+                className='input-class'
+                onChange={(event) => { setModalStudent({ ...modalStudent, Fname: event.target.value }); }}
+              />
+            </div>
+            <div className='duo'>
+              <label >Last Name: </label>
+              <input
+                type="text"
+                name="Lname"
+                value={modalStudent.Lname}
+                className='input-class'
+                onChange={(event) => setModalStudent({ ...modalStudent, Lname: event.target.value })}
+              />
+            </div>
+            <div id='savebtn'>
+              <button className='btn' onClick={() => insertStudent()}>Save Student</button>
+            </div>
+          </div>
+        </div> : <></>}
       {/*  Main container -> 2 cols -> side, main */}
       <div className="container">
         {/* Sidebar */}
@@ -192,7 +259,7 @@ function AdminPage() {
         {/* Main content */}
         <main className="main-content">
           {menu == 0 ?
-            <Students setDelModal={setDelModal} loadingStudentData={loadingStudentData} setLoadingStudentData={setLoadingStudentData} setWarningOn={setWarningOn} setWarningText={setWarningText} setmodal={setModalOn} setModalStudent={setModalStudent} update={update}></Students> : <></>
+            <Students setAddModal={setAddModal} setDelModal={setDelModal} loadingStudentData={loadingStudentData} setLoadingStudentData={setLoadingStudentData} setWarningOn={setWarningOn} setWarningText={setWarningText} setmodal={setModalOn} setModalStudent={setModalStudent} update={update}></Students> : <></>
           }
           {menu == 1 ?
             <Issues></Issues> : <></>

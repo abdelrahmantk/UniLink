@@ -118,7 +118,39 @@ body {
 #MainTitle>* {
   margin: 0;
 }
+.rounded-btn {
+  border-radius: 20px;
+  padding: 10px 20px;
+ 
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline ;
+  font-size: 16px;
+  margin: 4px 2px;
+  margin-right: 20px;
+  cursor: pointer;
+  width: max-content;
+  height: max-content;
+}
+#flextitle{
+  display: flex;
+  justify-content: start;
+  align-items: center;
 
+}
+.purple-btn {
+  background-color: #A688FA;
+}
+
+ 
+  .purple-btn:hover {
+  
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.3); /* More visible shadow on hover */
+    transform: translateY(-2px); /* Move the button slightly up on hover */
+  }
+ 
 #MainTitle {
   margin: 0;
   padding-left: 20px;
@@ -271,7 +303,7 @@ body {
 }
 
 #btn-bg:hover {
-  background-color: #4D4560;
+  background-color: #4d456053;
   border-radius: 5px;
   height: 30px;
   width: 30px;
